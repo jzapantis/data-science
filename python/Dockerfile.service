@@ -1,0 +1,13 @@
+FROM frolvlad/alpine-miniconda3
+
+WORKDIR /build_artifact
+
+RUN conda create -y --name service_template python=3.7 anaconda
+SHELL ["conda", "run", "-n", "service_template", "/bin/sh", "-c"]
+
+SHELL ["conda", "activate", "-n", "service_template", "/bin/sh", "-c"]
+SHELL ["pip", "install", "-r", "requirements.txt", "/bin/sh", "-c"]
+
+SHELL ["conda", "install", "-y", "--insecure", "redis", "/bin/bash", "-c"]
+
+COPY . /build_artifact

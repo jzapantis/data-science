@@ -1,0 +1,19 @@
+FROM frolvlad/alpine-miniconda3
+
+WORKDIR /build_artifact
+
+RUN apk add net-tools
+
+# Create our environment
+RUN conda create -y --name nlu_service_env_p37 tensorflow  python=3.7 anaconda
+SHELL ["conda", "run", "-n", "nlu_service_env_p37", "/bin/sh", "-c"]
+
+RUN conda install -y --insecure   -c anaconda word2vec
+RUN conda install -y --insecure  -c anaconda nltk
+RUN conda install -y --insecure -c anaconda git
+
+RUN pip install google-cloud-dialogflow-cx
+
+RUN ifconfig
+
+COPY . /build_artifact
